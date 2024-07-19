@@ -14,17 +14,27 @@
             text-align: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
         }
         h1 {
             color: #333;
             font-weight: 600;
             margin-bottom: 20px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 40px 0;
         }
         .mix-list {
             display: flex;
@@ -66,6 +76,8 @@
             cursor: pointer;
             border-radius: 4px;
             transition: background-color 0.3s ease;
+            margin: 10px auto;
+            display: block;
         }
         .play-btn:hover {
             background-color: #0056b3;
@@ -73,10 +85,16 @@
         .play-btn:focus {
             outline: none;
         }
+        .mix-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="djsanzlogo.png" alt="DJSanz Logo" class="logo">
         <h1>Mix Player</h1>
         <div class="mix-list" id="mixList"></div>
     </div>
@@ -86,24 +104,23 @@
     <script>
         // Sample mixes and album art data
         var mixes = [
-            { mix: "notlikeus.wav", albumArt: "notlikeus.png" },
-            { mix: "arjanvailly.wav", albumArt: "arjanvailly.png" },
-            { mix: "gtdfw.wav", albumArt: "gtdfw.png" },
-            { mix: "atgp.wav", albumArt: "atgp.png" },
-            { mix: "yababa.wav", albumArt: "yababa.png" },
-            { mix: "gskg.wav", albumArt: "gskg.png" },
-            { mix: "brcd.wav", albumArt: "brcd.png" },
-            { mix: "abms.wav", albumArt: "abms.png" },
-            { mix: "sai.wav", albumArt: "sai.png" },
-            { mix: "psuab.wav", albumArt: "psuab.png" },
-            { mix: "mgttt.wav", albumArt: "mgttt.png" },
-            { mix: "agbr.wav", albumArt: "agbr.png" },
-            { mix: "omppdkp.wav", albumArt: "omppdkp.png" },
-            { mix: "dcmb.wav", albumArt: "dcmb.png" },
-            { mix: "mjjp.wav", albumArt: "mjjp.png" },
-            { mix: "ndte.wav", albumArt: "ndte.png" },
-            { mix: "nxu.wav", albumArt: "nxu.png" }
-
+            { title: "Not Like Us (feat. Diljit, Sukha, Prabh, Karan)", mix: "notlikeus.wav", albumArt: "notlikeus.png" },
+            { title: "Carnival x Arjan Vailly x Fein", mix: "arjanvailly.wav", albumArt: "arjanvailly.png" },
+            { title: "Gasolina x Turn Down for What", mix: "gtdfw.wav", albumArt: "gtdfw.png" },
+            { title: "Amplifier x Gas Pedal", mix: "atgp.wav", albumArt: "atgp.png" },
+            { title: "La x Y Baba", mix: "yababa.wav", albumArt: "yababa.png" },
+            { title: "Ghungroo x Sher Khul Gaye", mix: "gskg.wav", albumArt: "gskg.png" },
+            { title: "Bheegi Raatein x Calm Down", mix: "brcd.wav", albumArt: "brcd.png" },
+            { title: "All by Myself x Starboy", mix: "abms.wav", albumArt: "abms.png" },
+            { title: "So Am I x Titanium", mix: "sai.wav", albumArt: "sai.png" },
+            { title: "Pepas x Shut Up & Bounce", mix: "psuab.wav", albumArt: "psuab.png" },
+            { title: "Mi Gente x Ta Ta Ta", mix: "mgttt.wav", albumArt: "mgttt.png" },
+            { title: "Akhiyaan Gulaab x Besharam Rang", mix: "agbr.wav", albumArt: "agbr.png" },
+            { title: "O Maahi x Pal Pal Dil Ke Paas", mix: "omppdkp.wav", albumArt: "omppdkp.png" },
+            { title: "Dil Chori x Morni Banke", mix: "dcmb.wav", albumArt: "dcmb.png" },
+            { title: "Marjaani x Jhoome Jo Pathaan", mix: "mjjp.wav", albumArt: "mjjp.png" },
+            { title: "Noormahal x Don't Tell Em", mix: "ndte.wav", albumArt: "ndte.png" },
+            { title: "True Stories x Just Wanna Rock", mix: "jwrts.wav", albumArt: "jwrts.png" }
         ];
 
         // Function to display mixes
@@ -114,7 +131,12 @@
             mixes.forEach(function(mix, index) {
                 var mixDiv = document.createElement("div");
                 mixDiv.className = "mix";
-                
+
+                var title = document.createElement("div");
+                title.className = "mix-title";
+                title.textContent = mix.title;
+                mixDiv.appendChild(title);
+
                 if (mix.albumArt) {
                     var img = document.createElement("img");
                     img.src = mix.albumArt;
