@@ -9,13 +9,12 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px;
             background-color: #f0f0f0;
             text-align: center;
         }
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 40px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -25,7 +24,7 @@
             max-width: 200px;
             margin-bottom: 20px;
         }
-        h1 {
+        h1, h2 {
             color: #333;
             font-weight: 600;
             margin-bottom: 20px;
@@ -41,7 +40,6 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px;
         }
         .mix {
             width: calc(33.33% - 20px);
@@ -95,15 +93,20 @@
 <body>
     <div class="container">
         <img src="djsanzlogo.png" alt="DJSanz Logo" class="logo">
-        <h1>Mix Player</h1>
-        <div class="mix-list" id="mixList"></div>
+        <h1>DJSanz</h1>
+        <div class="mix-list" id="generalMixList"></div>
+        <hr>
+        <h2>Team Mixes/Event Mixes</h2>
+        <div class="mix-list">
+            <a href="https://drive.google.com/drive/folders/1a-rPCqH12_mu7Z3qMaeHR0AcOt_V0iLG?usp=sharing" class="btn btn-info">Team/Event Mixes</a>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         // Sample mixes and album art data
-        var mixes = [
+        var generalMixes = [
             { title: "Not Like Us (feat. Diljit, Sukha, Prabh, Karan)", mix: "notlikeus.wav", albumArt: "notlikeus.png" },
             { title: "Carnival x Arjan Vailly x Fein", mix: "arjanvailly.wav", albumArt: "arjanvailly.png" },
             { title: "Gasolina x Turn Down for What", mix: "gtdfw.wav", albumArt: "gtdfw.png" },
@@ -120,15 +123,17 @@
             { title: "Dil Chori x Morni Banke", mix: "dcmb.wav", albumArt: "dcmb.png" },
             { title: "Marjaani x Jhoome Jo Pathaan", mix: "mjjp.wav", albumArt: "mjjp.png" },
             { title: "Noormahal x Don't Tell Em", mix: "ndte.wav", albumArt: "ndte.png" },
-            { title: "True Stories x Just Wanna Rock", mix: "jwrts.wav", albumArt: "jwrts.png" }
+            { title: "True Stories x Just Wanna Rock", mix: "jwrts.wav", albumArt: "jwrts.png" },
+            { title: "Rich Baby Daddy x Diliwali Girlfriend", mix: "rbddg1.wav", albumArt: "rbddg.png" },
+            { title: "Tere Vaaste x Heeriye", mix: "tvh.wav", albumArt: "tvh.png" }
         ];
 
         // Function to display mixes
-        function displayMixes() {
-            var mixList = document.getElementById("mixList");
+        function displayMixes(mixes, elementId) {
+            var mixList = document.getElementById(elementId);
             mixList.innerHTML = ""; // Clear existing list
 
-            mixes.forEach(function(mix, index) {
+            mixes.forEach(function(mix) {
                 var mixDiv = document.createElement("div");
                 mixDiv.className = "mix";
 
@@ -165,7 +170,7 @@
         }
 
         // Initialize
-        displayMixes();
+        displayMixes(generalMixes, "generalMixList");
     </script>
 </body>
 </html>
