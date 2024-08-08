@@ -13,13 +13,8 @@
             text-align: center;
         }
         .container {
-<<<<<<< HEAD
             max-width: 1200px;
             margin: 40px auto;
-=======
-            max-width: 900px;
-            margin: 0 auto;
->>>>>>> 72726ac (Resolved merge conflict in index.html)
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -29,11 +24,7 @@
             max-width: 200px;
             margin-bottom: 20px;
         }
-<<<<<<< HEAD
         h1, h2 {
-=======
-        h1 {
->>>>>>> 72726ac (Resolved merge conflict in index.html)
             color: #333;
             font-weight: 600;
             margin-bottom: 20px;
@@ -97,12 +88,24 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+        .now-playing {
+            margin-top: 30px;
+        }
+        .now-playing img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 4px;
+        }
+        .now-playing-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="djsanzlogo.png" alt="DJSanz Logo" class="logo">
-<<<<<<< HEAD
         <h1>DJSanz</h1>
         <div class="mix-list" id="generalMixList"></div>
         <hr>
@@ -110,21 +113,17 @@
         <div class="mix-list">
             <a href="https://drive.google.com/drive/folders/1a-rPCqH12_mu7Z3qMaeHR0AcOt_V0iLG?usp=sharing" class="btn btn-info">Team/Event Mixes</a>
         </div>
-=======
-        <h1>Mix Player</h1>
-        <div class="mix-list" id="mixList"></div>
->>>>>>> 72726ac (Resolved merge conflict in index.html)
+        <div class="now-playing" id="nowPlaying" style="display: none;">
+            <img id="nowPlayingArt" src="" alt="Now Playing Art">
+            <div class="now-playing-title" id="nowPlayingTitle"></div>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         // Sample mixes and album art data
-<<<<<<< HEAD
         var generalMixes = [
-=======
-        var mixes = [
->>>>>>> 72726ac (Resolved merge conflict in index.html)
             { title: "Not Like Us (feat. Diljit, Sukha, Prabh, Karan)", mix: "notlikeus.wav", albumArt: "notlikeus.png" },
             { title: "Carnival x Arjan Vailly x Fein", mix: "arjanvailly.wav", albumArt: "arjanvailly.png" },
             { title: "Gasolina x Turn Down for What", mix: "gtdfw.wav", albumArt: "gtdfw.png" },
@@ -142,13 +141,9 @@
             { title: "Marjaani x Jhoome Jo Pathaan", mix: "mjjp.wav", albumArt: "mjjp.png" },
             { title: "Noormahal x Don't Tell Em", mix: "ndte.wav", albumArt: "ndte.png" },
             { title: "True Stories x Just Wanna Rock", mix: "jwrts.wav", albumArt: "jwrts.png" },
-<<<<<<< HEAD
             { title: "Rich Baby Daddy x Diliwali Girlfriend", mix: "rbddg1.wav", albumArt: "rbddg.png" },
-            { title: "Tere Vaaste x Heeriye", mix: "tvh.wav", albumArt: "tvh.png" }
-=======
             { title: "Tere Vaaste x Heeriye", mix: "tvh.wav", albumArt: "tvh.png" },
-            { title: "Rich Baby Daddy", mix: "rbddg.wav", albumArt: "rbddg.png" }
->>>>>>> 72726ac (Resolved merge conflict in index.html)
+            { title: "Akhiyaan Gulaab x Move", mix: "agm.wav", albumArt: "djsanzlogo.jpg" }
         ];
 
         // Function to display mixes
@@ -185,11 +180,24 @@
                 playButton.addEventListener("click", function() {
                     audio.currentTime = 0; // Restart audio from beginning
                     audio.play(); // Play the corresponding audio
+                    updateNowPlaying(mix); // Update the now playing section
                 });
                 mixDiv.appendChild(playButton);
 
                 mixList.appendChild(mixDiv);
             });
+        }
+
+        // Function to update now playing section
+        function updateNowPlaying(mix) {
+            var nowPlaying = document.getElementById("nowPlaying");
+            var nowPlayingArt = document.getElementById("nowPlayingArt");
+            var nowPlayingTitle = document.getElementById("nowPlayingTitle");
+
+            nowPlayingArt.src = mix.albumArt;
+            nowPlayingTitle.textContent = mix.title;
+
+            nowPlaying.style.display = "block";
         }
 
         // Initialize
