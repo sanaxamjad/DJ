@@ -48,7 +48,7 @@
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             background-color: #fff;
         }
         .mix:hover {
@@ -73,12 +73,13 @@
             font-size: 14px;
             cursor: pointer;
             border-radius: 4px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             margin: 10px auto;
             display: block;
         }
         .play-btn:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
         .play-btn:focus {
             outline: none;
@@ -90,6 +91,15 @@
         }
         .now-playing {
             margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
         .now-playing img {
             max-width: 150px;
@@ -99,7 +109,6 @@
         .now-playing-title {
             font-size: 20px;
             font-weight: bold;
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -120,6 +129,7 @@
     </div>
 
     <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         // Sample mixes and album art data
@@ -191,17 +201,16 @@
 
         // Function to update now playing section
         function updateNowPlaying(mix) {
-            var nowPlaying = document.getElementById("nowPlaying");
+            var nowPlayingDiv = document.getElementById("nowPlaying");
             var nowPlayingArt = document.getElementById("nowPlayingArt");
             var nowPlayingTitle = document.getElementById("nowPlayingTitle");
 
-            nowPlayingArt.src = mix.albumArt;
-            nowPlayingTitle.textContent = mix.title;
-
-            nowPlaying.style.display = "block";
+            nowPlayingDiv.style.display = "flex"; // Show the now playing section
+            nowPlayingArt.src = mix.albumArt || "djsanzlogo.png"; // Set album art or fallback to logo
+            nowPlayingTitle.textContent = mix.title; // Update the title
         }
 
-        // Initialize
+        // Display the general mixes on page load
         displayMixes(generalMixes, "generalMixList");
     </script>
 </body>
