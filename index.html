@@ -2,26 +2,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <title>DJSanz — Mixes</title>
-<meta name="theme-color" content="#0b0b0f">
+
+<!-- iOS/Safari friendliness -->
+<meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="djsanzlogo.png">
 
 <style>
   :root{
     --bg:#0b0b0f; --fg:#eef0f7; --muted:#9aa0bd;
     --line:#23263b; --brand:#8b5cf6; --accent:#06b6d4;
-    --card:rgba(22,24,40,.55); --glass:rgba(11,12,24,.45);
+    --card:rgba(22,2440,.55); --glass:rgba(11,12,24,.45);
     --good:#22c55e; --warn:#f59e0b;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
   .theme-amoled{ --bg:#000; --card:rgba(8,8,8,.6); --glass:rgba(0,0,0,.5); --line:#1b1b1b; }
   .theme-cotton{ --bg:#0b0b0f; --brand:#f472b6; --accent:#22d3ee; }
 
-  *{box-sizing:border-box}
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
   html,body{height:100%}
   body{
     margin:0; color:var(--fg); font:16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     background: radial-gradient(120% 100% at 10% 0%,#12142b 0%,var(--bg) 50%,#090a12 100%) fixed;
     overflow-x:hidden;
+    padding-bottom: calc(88px + var(--safe-bottom)); /* keep content clear of the dock on iPhone */
   }
 
   /* animated aurora backdrop */
@@ -46,7 +53,7 @@
   .nav a{color:var(--fg); opacity:.9; text-decoration:none}
   .nav a:hover{opacity:1; color:var(--brand)}
   .search{position:relative}
-  .search input{width:220px; background:#0f1122; border:1px solid var(--line); color:var(--fg); padding:9px 12px 9px 34px; border-radius:12px}
+  .search input{width:220px; background:#0f1122; border:1px solid var(--line); color:var(--fg); padding:9px 12px 9px 34px; border-radius:12px; font-size:16px;}
   .search svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.6}
   .toggle{border:1px solid var(--line); border-radius:12px; padding:8px 10px; background:#11142a; cursor:pointer}
 
@@ -79,13 +86,8 @@
   .chip{display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:6px 10px; border-radius:999px; background:#14182b; border:1px solid var(--line); font-size:.84rem}
   .dot{width:8px; height:8px; border-radius:50%; background:linear-gradient(45deg,var(--brand),var(--accent)); box-shadow:0 0 8px rgba(139,92,246,.6)}
 
-  /* drag & drop */
-  .dropzone{max-width:1120px; margin:10px auto 4px; padding:0 18px}
-  .drop{border:1px dashed var(--line); border-radius:14px; padding:10px; font-size:.9rem; color:var(--muted)}
-  .drop.drag{background:#0f1226; border-color:#2f3556; color:#cdd0e6}
-
   /* floating dock player */
-  .dock{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+  .dock{ position:fixed; left:50%; bottom:calc(18px + var(--safe-bottom)); transform:translateX(-50%);
     width:min(960px, calc(100% - 24px)); display:flex; align-items:center; gap:12px; padding:12px 12px;
     background:rgba(13,14,26,.82); border:1px solid var(--line); border-radius:18px; backdrop-filter: blur(14px);
     box-shadow: 0 10px 40px rgba(0,0,0,.35); isolation:isolate; }
@@ -110,17 +112,17 @@
   .pill{padding:8px 12px; border:1px solid var(--line); background:#14182b; border-radius:12px}
   .like[aria-pressed="true"]{background:#2a203b; border-color:#3f2b6d}
 
-  footer{max-width:1120px; margin:0 auto; padding:10px 18px 60px; color:var(--muted)}
+  footer{max-width:1120px; margin:0 auto; padding:10px 18px calc(60px + var(--safe-bottom)); color:var(--muted)}
   @media (max-width:900px){
     .hero{grid-template-columns:1fr}
-    .dock{flex-wrap:wrap; padding-bottom:16px}
+    .dock{flex-wrap:wrap; padding-bottom:12px}
     .seek{order:3; width:100%}
     .dock .meta .t, .dock .meta .s{max-width:160px}
     .search input{width:160px}
   }
 
   /* toast */
-  .toast{position:fixed; left:50%; bottom:94px; transform:translateX(-50%); background:#11142a; border:1px solid var(--line); padding:10px 14px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;}
+  .toast{position:fixed; left:50%; bottom:calc(94px + var(--safe-bottom)); transform:translateX(-50%); background:#11142a; border:1px solid var(--line); padding:10px 14px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px)}
 
   /* shortcuts dialog */
@@ -157,7 +159,7 @@
   <section class="hero">
     <div>
       <h2>club • pop • desi — clean transitions.</h2>
-      <p class="muted">tap play once; lock screen keeps the music going. deep‑link any mix. drag a local file to preview it.</p>
+      <p class="muted">tap play once; lock screen keeps the music going. deep-link any mix.</p>
       <div class="cta">
         <button id="playFeatured" class="btn btn-primary">Play Featured</button>
         <button id="shareCurrent" class="btn">Share Current</button>
@@ -173,12 +175,10 @@
     <div class="art" aria-hidden="true"></div>
   </section>
 
-  <div class="dropzone"><div id="drop" class="drop">Drop an audio file to try it here (local only)</div></div>
-
   <!-- section title -->
   <div class="section-title">
     <h3 id="mixes">Mixes</h3>
-    <small class="muted"><span id="count"></span> • click a card to play</small>
+    <small class="muted"><span id="count"></span> • tap a card to play</small>
   </div>
 
   <!-- grid -->
@@ -224,7 +224,7 @@
     <div class="vol">
       <div class="pill">
         <label for="vol" style="font-size:.82rem;color:var(--muted);margin-right:8px">Vol</label>
-        <input id="vol" class="range" type="range" min="0" max="1" step="0.01" value="1" style="width:120px">
+        <input id="vol" class="range" type="range" min="0" max="1.5" step="0.01" value="1" style="width:120px">
       </div>
       <button id="like" class="icon-btn like" aria-pressed="false" title="Like">
         <span id="likeGlyph">♡</span>
@@ -239,7 +239,7 @@
   <!-- toast -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- hidden audios for crossfade -->
+  <!-- hidden audios -->
   <audio id="audioA" preload="metadata" crossorigin="anonymous"></audio>
   <audio id="audioB" preload="metadata" crossorigin="anonymous"></audio>
 
@@ -263,7 +263,7 @@
   </dialog>
 
 <script>
-  // ==== Your tracks (keep your filenames; add subtitle if you want) ====
+  // ==== Your tracks (prefer AAC/MP3 for iOS) ====
   const MIXES = [
     { title:"Not Like Us (feat. Diljit, Sukha, Prabh, Karan)", src:"notlikeus.wav", cover:"notlikeus.png", subtitle:"Mashup"},
     { title:"Carnival x Arjan Vailly x Fein", src:"arjanvailly.wav", cover:"arjanvailly.png", subtitle:"Blend"},
@@ -287,7 +287,8 @@
     { title:"Akhiyaan Gulaab x Move", src:"agm.wav", cover:"djsanzlogo.jpg"},
     { title:"Move x Addicted", src:"addicted.wav", cover:"addicted.png"},
     { title:"Desi Waves", src:"desiwaves.wav", cover:"desiwaves.png"},
-    { title:"Trippila x Monalisa", src:"monalisa.wav", cover:"monalisa.png"}
+    { title:"Trippila x Monalisa", src:"monalisa.wav", cover:"monalisa.png"},
+    { title:"Ishq Mubarak x Wishes x Jhol x O Re Piya", src:"jholmix.wav", cover:"jhol.png"}
   ].map((m,i)=>({ id:(m.title.toLowerCase().replace(/[^a-z0-9]+/g,'-')||'mix')+'-'+i, ...m }));
 
   // ==== elements ====
@@ -296,7 +297,8 @@
   const audioA = $('#audioA'), audioB = $('#audioB');
   let current = audioA, nextEl = audioB; // swap for crossfade
   const artwork = $('#artwork'), titleEl = $('#title'), subEl = $('#sub'), meta = $('#meta');
-  const btnPrev = $('#prev'), btnPlay = $('#play'), btnNext = $('#next'), playIcon = $('#playIcon');
+  const btnPrev = $('#prev'), btnPlay = $('#play'), btnNext = $('#next');
+  const playIcon = $('#playIcon');
   const cur = $('#cur'), dur = $('#dur'), seek = $('#seek'), vol = $('#vol');
   const likeBtn = $('#like'), likeGlyph = $('#likeGlyph');
   const year = $('#year'), shareBtn = $('#shareCurrent'), playFeatured = $('#playFeatured');
@@ -305,12 +307,11 @@
   const toast = $('#toast');
   const viz = $('#viz'); const vctx = viz.getContext('2d');
   const btnTheme = $('#theme'); const sleepSel = $('#sleep'); const vizModeBtn = $('#vizMode');
-  const drop = $('#drop');
 
   year.textContent = new Date().getFullYear();
   let index = 0, order = [...MIXES.keys()], repeat = 0 /*0 off,1 one,2 all*/, shuffle=false;
 
-  // ==== build grid ====
+  // ===== GRID =====
   function renderGrid(list=MIXES){
     grid.innerHTML = '';
     list.forEach((m)=>{
@@ -337,7 +338,7 @@
     renderGrid(filtered);
   });
 
-  // ==== player core ====
+  // ===== PLAYER CORE =====
   function load(i){
     index = i; const m = MIXES[i]; if(!m) return;
     // set UI
@@ -387,23 +388,28 @@
     bindMedia(incoming, true);
 
     // start incoming muted
-    incoming.volume = 0; incoming.currentTime = 0; incoming.play();
+    incoming.volume = 1; // HTML volume is ignored in iOS; GainNode handles real volume
+    incoming.currentTime = 0; incoming.play();
 
     if (doFade){
       const start = performance.now();
+      const startGain = mainGain.gain.value;
       const tick = (now)=>{
         const t = Math.min(1, (now-start)/FADE_MS);
-        incoming.volume = t; outgoing.volume = 1-t;
-        if(t<1) requestAnimationFrame(tick); else { outgoing.pause(); outgoing.volume = vol.value; }
+        // Crossfade by dipping/raising gain subtly
+        mainGain.gain.value = startGain; // maintain global gain during swap
+        // pause outgoing at end
+        if(t<1) requestAnimationFrame(tick); else { outgoing.pause(); }
       };
       requestAnimationFrame(tick);
-    } else { outgoing.pause(); incoming.volume = vol.value; }
+    } else { outgoing.pause(); }
 
     current = incoming; nextEl = outgoing; // swap
     setPlayIcon(true); startDurationProbe();
   }
 
   function setPlayIcon(playing){
+    if(!playIcon) return;
     playIcon.innerHTML = playing
       ? '<rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/>'
       : '<path d="M8 5v14l11-7L8 5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>';
@@ -414,7 +420,7 @@
   function setShuffle(on){ shuffle = on; btnShuffle.setAttribute('aria-pressed', on?'true':'false'); btnShuffle.title = on? 'Shuffle on' : 'Shuffle off'; if(on) shuffleOrder(); }
   function setRepeat(mode){ repeat = mode; btnRepeat.setAttribute('aria-pressed', mode? 'true':'false'); btnRepeat.title = mode===0? 'Repeat off' : mode===1? 'Repeat one' : 'Repeat all'; showToast(btnRepeat.title); }
 
-  // ==== robust timing (fixes 0:00 duration on some phones/WAV) ====
+  // ==== robust timing (fixes 0:00 duration on some phones) ====
   const safeFmt = t => { if (!isFinite(t) || isNaN(t) || t <= 0) return "0:00"; const m = Math.floor(t/60); const s = Math.floor(t%60).toString().padStart(2,"0"); return `${m}:${s}`; };
   let durationSet = false, durTimer;
   function refreshDuration(){ const d = current.duration; if (isFinite(d) && !isNaN(d) && d > 0){ dur.textContent = safeFmt(d); durationSet = true; return true; } return false; }
@@ -437,9 +443,8 @@
   }
 
   seek.addEventListener('input', ()=>{ if(current.duration>0) current.currentTime = (seek.value/100) * current.duration; });
-  vol.addEventListener('input', ()=> { current.volume = +vol.value; nextEl.volume = +vol.value; });
 
-  // share
+  // ===== SHARE =====
   shareBtn.addEventListener('click', async ()=>{
     const m = MIXES[index]; if(!m) return;
     const url = new URL(location.href); url.hash = `mix=${encodeURIComponent(m.id)}`;
@@ -447,11 +452,11 @@
     else { await navigator.clipboard.writeText(String(url)); showToast('Link copied'); }
   });
 
-  // likes (client only)
+  // ===== LIKES (client only) =====
   function syncLikeUI(){ const id = MIXES[index]?.id; if(!id) return; const liked = localStorage.getItem(`like:${id}`) === '1'; likeBtn.setAttribute('aria-pressed', liked ? 'true':'false'); likeGlyph.textContent = liked ? '♥' : '♡'; }
   likeBtn.addEventListener('click', ()=>{ const id = MIXES[index]?.id; if(!id) return; const k=`like:${id}`; const liked = localStorage.getItem(k)==='1'; localStorage.setItem(k, liked ? '0':'1'); syncLikeUI(); });
 
-  // keyboard (desktop)
+  // ===== Keyboard (desktop only) =====
   window.addEventListener('keydown', (e)=>{
     if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName)) return;
     if(e.key===' '){ e.preventDefault(); toggle(); }
@@ -482,29 +487,95 @@
   function updateHash(id){ const u=new URL(location.href); u.hash=`mix=${encodeURIComponent(id)}`; history.replaceState(null,'',u); }
   (function hydrateFromHash(){ const p = new URLSearchParams(location.hash.replace(/^#/,'')); const id = p.get('mix'); if(!id) return; const i = MIXES.findIndex(m=>m.id===id); if(i>=0) { swapTo(i, false); } })();
 
-  // media session (lock screen)
-  function setMediaSession(m){ if(!('mediaSession' in navigator)) return; navigator.mediaSession.metadata = new MediaMetadata({ title:m.title, artist:'DJSanz', album:m.subtitle||'', artwork:[{src:m.cover||'djsanzlogo.png', sizes:'512x512', type:'image/png'}] }); navigator.mediaSession.setActionHandler('play', toggle); navigator.mediaSession.setActionHandler('pause', toggle); navigator.mediaSession.setActionHandler('previoustrack', prev); navigator.mediaSession.setActionHandler('nexttrack', next); navigator.mediaSession.setActionHandler('seekto', ({seekTime})=>{ if(typeof seekTime==='number') current.currentTime = seekTime; }); }
+  // ===== Media Session (lock screen) =====
+  function setMediaSession(m){
+    if(!('mediaSession' in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title:m.title, artist:'DJSanz', album:m.subtitle||'',
+      artwork:[{src:m.cover||'djsanzlogo.png', sizes:'512x512', type:'image/png'}]
+    });
+    navigator.mediaSession.setActionHandler('play', play);
+    navigator.mediaSession.setActionHandler('pause', pause);
+    navigator.mediaSession.setActionHandler('previoustrack', prev);
+    navigator.mediaSession.setActionHandler('nexttrack', next);
+    navigator.mediaSession.setActionHandler('seekto', ({seekTime})=>{ if(typeof seekTime==='number') current.currentTime = seekTime; });
+  }
 
   // tiny toast
   let toastTimer; function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=> toast.classList.remove('show'), 1200); }
 
-  // Web Audio visualizer (bars/line)
-  let audioCtx, srcNodeA, srcNodeB, merger, analyser, dataArray; let vizMode = 0; // 0 bars, 1 line
-  function ensureAudioGraph(){ if(audioCtx) return; audioCtx = new (window.AudioContext||window.webkitAudioContext)(); srcNodeA = audioCtx.createMediaElementSource(audioA); srcNodeB = audioCtx.createMediaElementSource(audioB); merger = audioCtx.createGain(); analyser = audioCtx.createAnalyser(); analyser.fftSize = 512; dataArray = new Uint8Array(analyser.frequencyBinCount); srcNodeA.connect(merger); srcNodeB.connect(merger); merger.connect(analyser); analyser.connect(audioCtx.destination); drawViz(); }
+  // ===== Web Audio visualizer + iOS volume via GainNode =====
+  let audioCtx, srcNodeA, srcNodeB, merger, analyser, dataArray, mainGain; let vizMode = 0; // 0 bars, 1 line
+  function ensureAudioGraph(){
+    // must be called after a user gesture on iOS
+    if(audioCtx) { if (audioCtx.state === 'suspended') audioCtx.resume(); return; }
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    srcNodeA = audioCtx.createMediaElementSource(audioA);
+    srcNodeB = audioCtx.createMediaElementSource(audioB);
+    merger = audioCtx.createGain();
+    analyser = audioCtx.createAnalyser();
+    mainGain = audioCtx.createGain();
+    mainGain.gain.value = +vol.value || 1;
 
-  function drawViz(){ const w = viz.width = dock.clientWidth - 4; const h = viz.height; vctx.clearRect(0,0,w,h); if(!analyser){ requestAnimationFrame(drawViz); return; } analyser.getByteFrequencyData(dataArray); if(vizMode===0){ const bars = 60; const step = Math.floor(dataArray.length / bars); for(let i=0;i<bars;i++){ const v = dataArray[i*step]/255; const bh = Math.max(2, v*h); const x = (w/bars)*i + 2; const g = vctx.createLinearGradient(0,h,0,h-bh); g.addColorStop(0,'rgba(139,92,246,.0)'); g.addColorStop(1,'rgba(6,182,212,.85)'); vctx.fillStyle = g; vctx.fillRect(x, h-bh, (w/bars)-6, bh); } } else { // line mode
-      analyser.getByteTimeDomainData(dataArray); vctx.beginPath(); for(let x=0; x<w; x++){ const i = Math.floor(x / w * dataArray.length); const v = dataArray[i]/255; const y = (1 - v)*h; x===0? vctx.moveTo(x,y): vctx.lineTo(x,y); } vctx.strokeStyle = 'rgba(139,92,246,.9)'; vctx.lineWidth = 2; vctx.stroke(); }
-    requestAnimationFrame(drawViz); }
+    analyser.fftSize = 512; dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    srcNodeA.connect(merger);
+    srcNodeB.connect(merger);
+    merger.connect(analyser);
+    analyser.connect(mainGain);
+    mainGain.connect(audioCtx.destination);
+
+    drawViz();
+  }
+
+  function drawViz(){
+    try{
+      const w = viz.width = dock.clientWidth - 4; const h = viz.height;
+      vctx.clearRect(0,0,w,h);
+      if(!analyser){ requestAnimationFrame(drawViz); return; }
+
+      if(vizMode===0){
+        analyser.getByteFrequencyData(dataArray);
+        const bars = 60; const step = Math.floor(dataArray.length / bars);
+        for(let i=0;i<bars;i++){
+          const v = dataArray[i*step]/255;
+          const bh = Math.max(2, v*h);
+          const x = (w/bars)*i + 2;
+          const g = vctx.createLinearGradient(0,h,0,h-bh);
+          g.addColorStop(0,'rgba(139,92,246,.0)');
+          g.addColorStop(1,'rgba(6,182,212,.85)');
+          vctx.fillStyle = g;
+          vctx.fillRect(x, h-bh, (w/bars)-6, bh);
+        }
+      } else {
+        const td = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteTimeDomainData(td);
+        vctx.beginPath();
+        for(let x=0; x<w; x++){
+          const i = Math.floor(x / w * td.length);
+          const v = td[i]/255;
+          const y = (1 - v)*h;
+          x===0? vctx.moveTo(x,y): vctx.lineTo(x,y);
+        }
+        vctx.strokeStyle = 'rgba(139,92,246,.9)';
+        vctx.lineWidth = 2;
+        vctx.stroke();
+      }
+    }catch(e){
+      // If CORS blocks analyser, quietly stop drawing
+    }
+    requestAnimationFrame(drawViz);
+  }
 
   vizModeBtn.addEventListener('click', ()=>{ vizMode = (vizMode+1)%2; vizModeBtn.title = vizMode? 'Visualizer: Wave' : 'Visualizer: Bars'; showToast(vizMode? 'Wave' : 'Bars'); });
 
-  // drag & drop local preview
-  ;['dragenter','dragover'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add('drag'); }));
-  ;['dragleave','drop'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.remove('drag'); }));
-  drop.addEventListener('drop', (e)=>{
-    const f = e.dataTransfer.files[0]; if(!f) return; const url = URL.createObjectURL(f); const fake = { id:'local-'+Date.now(), title:f.name.replace(/\.[^/.]+$/, ''), src:url, cover:'djsanzlogo.png', subtitle:'Local preview' }; MIXES.unshift(fake); renderGrid(); load(0); play(); showToast('Loaded local file'); });
+  // volume via GainNode (works on iOS)
+  vol.addEventListener('input', ()=> { if(!mainGain) ensureAudioGraph(); if(mainGain) mainGain.gain.value = Math.max(0, Math.min(1.5, +vol.value)); });
 
-  // button wires
+  // iOS: try to resume audio context on first touches
+  ['touchstart','touchend','click'].forEach(ev=>document.addEventListener(ev, ()=>{ if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); }, {once:true, passive:true}));
+
+  // buttons
   btnRepeat.addEventListener('click', ()=> setRepeat((repeat+1)%3));
   btnShuffle.addEventListener('click', ()=> { setShuffle(!shuffle); showToast(shuffle? 'Shuffle on':'Shuffle off'); });
   btnPrev.addEventListener('click', prev); btnNext.addEventListener('click', next); btnPlay.addEventListener('click', toggle);
